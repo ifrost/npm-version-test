@@ -23,6 +23,7 @@ jobs:
         with:
           ref: 'main'
           fetch-tags: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
         run: npm install --immutable
