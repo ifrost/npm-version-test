@@ -1,0 +1,36 @@
+name: Create new version (package.json & CHANGELOG)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
+        default: 'minor'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  create-new-version:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 'main'
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Install dependencies
+        run: npm install --immutable
+
+      - name: Create version & update CHANGELOG
+        run: |
+          npm version ${{ inputs.version }}
+
+      - name: Push
+        run: git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "${{ github.head_ref }}"
