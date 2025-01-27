@@ -30,6 +30,8 @@ jobs:
       - name: Create version & update CHANGELOG
         run: |
           npm version ${{ inputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push
         run: git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" "${{ github.head_ref }}"
