@@ -27,16 +27,13 @@ jobs:
       - name: Install dependencies
         run: npm install --immutable
 
-      - name: Configure Git identity
+      - name: Create version & update CHANGELOG
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Create version & update CHANGELOG
-        run: |
           npm version ${{ inputs.version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push
-        run: git push "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" origin main --tags
+        run: git push origin main --tags
